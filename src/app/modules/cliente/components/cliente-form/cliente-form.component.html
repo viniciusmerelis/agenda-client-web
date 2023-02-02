@@ -1,0 +1,35 @@
+<form [formGroup]="form" (submit)="submitForm()">
+    <div class="grid">
+        <div class="col-12 md:col-6">
+            <div class="card">
+                <div class="p-fluid">
+                    <h5>{{titulo}}</h5>
+                    <div class="field">
+                        <label htmlFor="nome">Nome</label>
+                        <input pInputText id="nome" type="text" autocomplete="off" formControlName="nome"/>
+                        <small *ngIf="deveMostrarMensagemDeValidacao(form.get('nome'))"
+                               style="color: red;">{{mensagemDeValidacao(form.get('nome'))}}</small>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="telefone">Telefone</label>
+                        <input pInputText id="telefone" type="text" autocomplete="off" placeholder="(00)00000-0000"
+                               mask="(00)00000-0000" formControlName="telefone"/>
+                        <small *ngIf="deveMostrarMensagemDeValidacao(form.get('telefone'))"
+                               style="color: red;">{{mensagemDeValidacao(form.get('telefone'))}}</small>
+                    </div>
+                    <div class="field">
+                        <label htmlFor="dataNascimento">Data Nascimento</label>
+                        <p-calendar inputId="data-nascimento"
+                                    formControlName="dataNascimento"
+                                    dateFormat="dd/mm/yy">
+                        </p-calendar>
+                    </div>
+                </div>
+                <button pButton pRipple type="submit" class="mr-2 mb-2" label="Salvar" icon="pi pi-save"
+                        [disabled]="form.invalid || !form.dirty"></button>
+                <button pButton pRipple type="button" class="p-button-secondary mr-2 mb-2" label="Voltar" icon="pi pi-chevron-left"
+                        (click)="voltar()"></button>
+            </div>
+        </div>
+    </div>
+</form>

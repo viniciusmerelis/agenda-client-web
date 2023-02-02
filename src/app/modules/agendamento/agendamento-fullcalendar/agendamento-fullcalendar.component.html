@@ -1,0 +1,30 @@
+<div *ngIf="selecionarDesigner">
+    <p-card>
+        <h5>Acessar agenda de qual Designer?</h5>
+        <p-dropdown
+            [options]="designers"
+            optionLabel="nome"
+            placeholder="Selecione a Designer"
+            [showClear]="true"
+            [(ngModel)]="designerSelecionada"
+            (onChange)="obterHorarios(designerSelecionada.id)"
+        >
+        </p-dropdown>
+    </p-card>
+</div>
+<div *ngIf="exibirAgenda">
+    <p-card>
+        <div class="grid">
+            <div class="col-12 md:col-6">
+                <button pButton pRipple class="ml-3 mr-3 mb-6" label="Voltar"
+                        icon="pi pi-chevron-left" (click)="voltarASelecaoDeDesigner()"></button>
+                <span style="flex-grow:1"></span>
+                <button pButton pRipple class="p-button-success mr-3 mr-3 mb-6" label="Novo"
+                        icon="pi pi-plus" (click)="irParaNovoAgendamento()"></button>
+            </div>
+        </div>
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </p-card>
+</div>
+
+
