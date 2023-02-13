@@ -25,7 +25,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
-        private messageValidator: FormMessageValidator
+        public messageValidator: FormMessageValidator
     ) {
 
     }
