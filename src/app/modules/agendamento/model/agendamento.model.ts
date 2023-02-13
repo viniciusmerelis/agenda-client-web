@@ -1,10 +1,9 @@
-import {Cliente} from "../../cliente/model/cliente.model";
-import {Designer} from "../../designer/model/designer.model";
+import {Usuario} from "../../usuario/model/usuario.model";
 
 export interface Agendamento {
     id: number;
     data: Date;
-    cliente: Cliente;
-    designer: Designer;
+    cliente: Usuario;
+    usuario: Usuario;
     status: any
 }

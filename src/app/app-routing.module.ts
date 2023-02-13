@@ -1,7 +1,7 @@
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './modules/notfound/notfound.component';
-import { AppLayoutComponent } from "./layout/app.layout.component";
+import {RouterModule} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {NotfoundComponent} from './modules/notfound/notfound.component';
+import {AppLayoutComponent} from "./layout/app.layout.component";
 
 @NgModule({
     imports: [
@@ -9,8 +9,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    { path: 'clientes', loadChildren: () => import('./modules/cliente/cliente.module').then(m => m.ClienteModule) },
-                    { path: 'designers', loadChildren: () => import('./modules/designer/designer.module').then(m => m.DesignerModule) },
+                    { path: 'usuarios', loadChildren: () => import('./modules/usuario/usuario.module').then(m => m.UsuarioModule) },
                     { path: 'agendamentos', loadChildren: () => import('./modules/agendamento/agendamento.module').then(m => m.AgendamentoModule) }
                 ],
             },

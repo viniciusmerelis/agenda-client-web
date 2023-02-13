@@ -1,4 +1,4 @@
-export interface Cliente {
+export interface Usuario {
     id: number;
     nome: string;
     dataNascimento: Date;
