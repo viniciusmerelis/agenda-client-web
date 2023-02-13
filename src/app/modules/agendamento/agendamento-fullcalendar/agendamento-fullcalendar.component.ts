@@ -1,14 +1,14 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {LayoutService} from "../../../layout/service/app.layout.service";
 import {Subject, takeUntil} from "rxjs";
-import {Designer} from "../../designer/model/designer.model";
-import {DesignerService} from "../../designer/service/designer.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Evento} from "../model/evento.model";
 import {AgendamentoService} from "../service/agendamento.service";
 import {FullCalendarComponent} from '@fullcalendar/angular';
 import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
+import {UsuarioService} from "../../usuario/service/usuario.service";
+import {Usuario} from "../../usuario/model/usuario.model";
 
 
 @Component({
@@ -20,15 +20,15 @@ export class AgendamentoFullcalendarComponent implements OnInit, AfterViewInit, 
 
     @ViewChild('calendar') calendar: FullCalendarComponent;
     unsubscribeAll = new Subject<void>();
-    designers: Designer[];
-    designerSelecionada: Designer;
+    usuarios: Usuario[] = [];
+    designerSelecionada: Usuario;
     eventos: Evento[] = [];
     selecionarDesigner: boolean = false;
     exibirAgenda: boolean = false;
 
     constructor(
         private layoutService: LayoutService,
-        private designerService: DesignerService,
+        private usuarioService: UsuarioService,
         private router: Router,
         private route: ActivatedRoute,
         private agendamentoService: AgendamentoService
@@ -81,8 +81,8 @@ export class AgendamentoFullcalendarComponent implements OnInit, AfterViewInit, 
     }
 
     obterDesigners(): void {
-        this.designerService.listar().subscribe(designer => {
-            this.designers = designer;
+        this.usuarioService.listar().subscribe(usuario => {
+            this.usuarios = usuario;
             this.selecionarDesigner = true;
         });
     }

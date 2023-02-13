@@ -1,18 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Subject, takeUntil} from "rxjs";
-import {FormMessageValidator} from "../../../../shared/form-message-validator";
+import {UsuarioService} from "../../service/usuario.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 import {MessageService} from "primeng/api";
-import {DesignerService} from "../../service/designer.service";
-import {Designer} from "../../model/designer.model";
+import {FormMessageValidator} from "../../../../shared/form-message-validator";
+import {Usuario} from "../../model/usuario.model";
+import {UsuarioOutput} from "../../model/output/usuario-output.model";
 
 @Component({
-    selector: 'app-designer-form',
-    templateUrl: './designer-form.component.html',
-    styleUrls: ['./designer-form.component.scss']
+    selector: 'app-usuario-form',
+    templateUrl: './usuario-form.component.html',
+    styleUrls: ['./usuario-form.component.scss']
 })
-export class DesignerFormComponent extends FormMessageValidator implements OnInit, OnDestroy {
+export class UsuarioFormComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
     unsubscribeAll = new Subject<void>();
@@ -20,12 +21,13 @@ export class DesignerFormComponent extends FormMessageValidator implements OnIni
     estaCriando: boolean = false;
 
     constructor(
-        private designerService: DesignerService,
+        private usuarioService: UsuarioService,
         private router: Router,
         private route: ActivatedRoute,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private messageValidator: FormMessageValidator
     ) {
-        super();
+
     }
 
     ngOnInit(): void {
@@ -43,7 +45,8 @@ export class DesignerFormComponent extends FormMessageValidator implements OnIni
         this.form = new FormGroup({
             id: new FormControl(),
             nome: new FormControl(null, Validators.required),
-            telefone: new FormControl(null, [Validators.required, Validators.minLength(11)])
+            telefone: new FormControl(null, [Validators.required, Validators.minLength(11)]),
+            dataNascimento: new FormControl(null)
         });
     }
 
@@ -56,11 +59,15 @@ export class DesignerFormComponent extends FormMessageValidator implements OnIni
                     this.form.setValue({
                         id: null,
                         nome: null,
-                        telefone: null
+                        telefone: null,
+                        dataNascimento: null
                     });
                 } else {
-                    this.designerService.obterPorId(+param).subscribe(designer => {
-                        this.form.setValue(designer);
+                    this.usuarioService.obterPorId(+param).subscribe(cliente => {
+                        this.form.setValue(cliente);
+                        if (cliente.dataNascimento) {
+                            this.form.get('dataNascimento').setValue(new Date(cliente.dataNascimento));
+                        }
                         this.form.markAsPristine();
                         this.form.markAsUntouched();
                     });
@@ -77,23 +84,27 @@ export class DesignerFormComponent extends FormMessageValidator implements OnIni
     }
 
     salvar(): void {
-        const designer: Designer = this.form.value;
-        this.designerService.salvar(designer).subscribe(designer => {
+        const cliente: UsuarioOutput = {
+            nome: this.form.get('nome').value,
+            telefone: this.form.get('telefone').value,
+            dataNascimento: this.form.get('dataNascimento').value
+        }
+        this.usuarioService.salvar(cliente).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso!',
-                detail: 'Designer cadastrada.',
+                detail: 'Cliente cadastrada.',
                 life: 5500
             });
-            this.irParaListaDeClientes();
+            this.irParaListaDeUsuarios();
         });
     }
 
     atualizar(): void {
-        const designer: Designer = this.form.value;
-        this.designerService.atualizar(designer).subscribe(designer => {
+        const usuario: Usuario = this.form.value;
+        this.usuarioService.atualizar(usuario).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({
@@ -102,25 +113,24 @@ export class DesignerFormComponent extends FormMessageValidator implements OnIni
                 detail: 'Alterações realizadas com sucesso.',
                 life: 5500
             });
-            this.irParaListaDeClientes();
+            this.irParaListaDeUsuarios();
         });
     }
 
     voltar(): void {
-        this.router.navigate(['/designers'], {relativeTo: this.route});
+        this.router.navigate(['/usuarios'], {relativeTo: this.route});
     }
 
     tituloDoForm(): void {
         if (this.route.snapshot.url[0].path == 'novo') {
-            this.titulo = 'Nova Designer';
+            this.titulo = 'Novo Usuário';
             this.estaCriando = true;
         } else {
-            this.titulo = 'Editando Designer';
+            this.titulo = 'Editando Usuário';
         }
     }
 
-    irParaListaDeClientes(): void {
-        this.router.navigate(['/designers'], {relativeTo: this.route});
+    irParaListaDeUsuarios(): void {
+        this.router.navigate(['/usuarios'], {relativeTo: this.route});
     }
-
 }

@@ -1,24 +1,24 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ClienteService} from "../../service/cliente.service";
+import {UsuarioService} from "../../service/usuario.service";
 import {Table} from "primeng/table";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
-import {Cliente} from "../../model/cliente.model";
+import {Usuario} from "../../model/usuario.model";
 
 @Component({
-    selector: 'app-cliente-list',
-    templateUrl: './cliente-list.component.html',
-    styleUrls: ['./cliente-list.component.scss']
+    selector: 'app-usuario-list',
+    templateUrl: './usuario-list.component.html',
+    styleUrls: ['./usuario-list.component.scss']
 })
-export class ClienteListComponent implements OnInit {
+export class UsuarioListComponent implements OnInit {
 
-    clientes: Cliente[] = [];
-    inativarClienteDialog: boolean = false;
-    idClienteInativada: number;
+    usuarios: Usuario[] = [];
+    inativarUsuarioDialog: boolean = false;
+    idUsuarioInativado: number;
     @ViewChild('filter') filter!: ElementRef;
 
     constructor(
-        private clienteService: ClienteService,
+        private usuarioService: UsuarioService,
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService
@@ -26,11 +26,11 @@ export class ClienteListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.listarClientes();
+        this.listarUsuarios();
     }
 
-    listarClientes(): void {
-        this.clienteService.listar().subscribe(cliente => this.clientes = cliente);
+    listarUsuarios(): void {
+        this.usuarioService.listar().subscribe(usuario => this.usuarios = usuario);
     }
 
     novo(): void {
@@ -41,16 +41,16 @@ export class ClienteListComponent implements OnInit {
         this.router.navigate([`${id}`], {relativeTo: this.route});
     }
 
-    exibirInativarClienteDialog(id: number): void {
-        this.idClienteInativada = id;
-        this.inativarClienteDialog = true;
+    exibirInativarUsuarioDialog(id: number): void {
+        this.idUsuarioInativado = id;
+        this.inativarUsuarioDialog = true;
     }
 
     inativar(): void {
-        this.clienteService.inativar(this.idClienteInativada).subscribe({
+        this.usuarioService.inativar(this.idUsuarioInativado).subscribe({
             next: () => {
-                this.inativarClienteDialog = false;
-                this.clientes = this.clientes.filter(c => c.id !== this.idClienteInativada);
+                this.inativarUsuarioDialog = false;
+                this.usuarios = this.usuarios.filter(c => c.id !== this.idUsuarioInativado);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Sucesso!',
@@ -59,7 +59,7 @@ export class ClienteListComponent implements OnInit {
                 });
             },
             error: (error) => {
-                this.inativarClienteDialog = false;
+                this.inativarUsuarioDialog = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Falha!',

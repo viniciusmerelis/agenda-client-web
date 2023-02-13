@@ -1,8 +1,8 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <h5>Listagem de Clientes</h5>
-            <p-table #table [value]="clientes" [rows]="10" [rowHover]="true" styleClass="p-datatable-gridlines"
+            <h5>Listagem de Usuários</h5>
+            <p-table #table [value]="usuarios" [rows]="10" [rowHover]="true" styleClass="p-datatable-gridlines"
                      [paginator]="true" [globalFilterFields]="['nome','telefone','ativo']" responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-between flex-column sm:flex-row">
@@ -32,21 +32,21 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-cliente>
+                <ng-template pTemplate="body" let-usuario>
                     <tr>
                         <td class="text-center" style="min-width: 12rem;">
-                            {{cliente.nome}}
+                            {{usuario.nome}}
                         </td>
                         <td class="text-center" style="min-width: 12rem;">
-                            {{cliente.telefone | mask: '(00)00000-0000'}}
+                            {{usuario.telefone | mask: '(00)00000-0000'}}
                         </td>
                         <td class="text-center" style="min-width: 12rem;">
-                            {{cliente.dataNascimento | date: 'dd/MM/yyyy'}}
+                            {{usuario.dataNascimento | date: 'dd/MM/yyyy'}}
                         </td>
                         <td>
                             <div class="text-center">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editar(cliente.id)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="exibirInativarClienteDialog(cliente.id)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editar(usuario.id)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="exibirInativarUsuarioDialog(usuario.id)"></button>
                             </div>
                         </td>
                     </tr>
@@ -56,13 +56,13 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="inativarClienteDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+<p-dialog [(visible)]="inativarUsuarioDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>Deseja realmente inativar essa cliente?</span>
+        <span>Deseja realmente inativar esse usuário?</span>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não" (click)="inativarClienteDialog = false"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não" (click)="inativarUsuarioDialog = false"></button>
         <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim" (click)="inativar()"></button>
     </ng-template>
 </p-dialog>
