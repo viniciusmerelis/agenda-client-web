@@ -27,8 +27,8 @@ export class ClienteService {
         return this.http.post<Cliente>(this.apiUrl, usuario);
     }
 
-    atualizar(usuario: Cliente): Observable<Cliente> {
-        return this.http.put<Cliente>(`${this.apiUrl}/${usuario.id}`, usuario);
+    atualizar(id: number, cliente: ClienteOutput): Observable<Cliente> {
+        return this.http.put<Cliente>(`${this.apiUrl}/${id}`, cliente);
     }
 
     excluir(id: number) {

@@ -97,8 +97,11 @@ export class ClienteFormComponent implements OnInit, OnDestroy {
     }
 
     atualizar(): void {
-        const cliente: Cliente = this.form.value;
-        this.clienteService.atualizar(cliente).subscribe(() => {
+        const clienteOutput: ClienteOutput = {
+            nome: this.form.get('nome').value,
+            telefone: this.form.get('telefone').value,
+        }
+        this.clienteService.atualizar(this.form.get('id').value, clienteOutput).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({

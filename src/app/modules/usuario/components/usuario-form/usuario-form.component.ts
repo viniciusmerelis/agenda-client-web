@@ -84,12 +84,12 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
 
     salvar(): void {
-        const cliente: UsuarioOutput = {
+        const usuarioOutput: UsuarioOutput = {
             nome: this.form.get('nome').value,
             telefone: this.form.get('telefone').value,
             dataNascimento: this.form.get('dataNascimento').value
         }
-        this.usuarioService.salvar(cliente).subscribe(() => {
+        this.usuarioService.salvar(usuarioOutput).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({
