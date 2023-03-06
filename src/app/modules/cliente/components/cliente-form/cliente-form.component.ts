@@ -1,19 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UsuarioService} from "../../service/usuario.service";
-import {ActivatedRoute, Router} from "@angular/router";
 import {Subject, takeUntil} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {FormMessageValidator} from "../../../../shared/form-message-validator";
-import {Usuario} from "../../model/usuario.model";
-import {UsuarioOutput} from "../../model/output/usuario-output.model";
+import {ClienteService} from "../../service/cliente.service";
+import {ClienteOutput} from "../../model/output/cliente-output.model";
+import {Cliente} from "../../model/cliente.model";
 
 @Component({
-    selector: 'app-usuario-form',
-    templateUrl: './usuario-form.component.html',
-    styleUrls: ['./usuario-form.component.scss']
+    selector: 'app-cliente-form',
+    templateUrl: './cliente-form.component.html',
+    styleUrls: ['./cliente-form.component.scss']
 })
-export class UsuarioFormComponent implements OnInit, OnDestroy {
+export class ClienteFormComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
     unsubscribeAll = new Subject<void>();
@@ -21,7 +21,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     estaCriando: boolean = false;
 
     constructor(
-        private usuarioService: UsuarioService,
+        private clienteService: ClienteService,
         private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
@@ -45,8 +45,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
         this.form = new FormGroup({
             id: new FormControl(),
             nome: new FormControl(null, Validators.required),
-            telefone: new FormControl(null, [Validators.required, Validators.minLength(11)]),
-            dataNascimento: new FormControl(null)
+            telefone: new FormControl(null, [Validators.required, Validators.minLength(11)])
         });
     }
 
@@ -59,15 +58,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
                     this.form.setValue({
                         id: null,
                         nome: null,
-                        telefone: null,
-                        dataNascimento: null
+                        telefone: null
                     });
                 } else {
-                    this.usuarioService.obterPorId(+param).subscribe(cliente => {
+                    this.clienteService.obterPorId(+param).subscribe(cliente => {
                         this.form.setValue(cliente);
-                        if (cliente.dataNascimento) {
-                            this.form.get('dataNascimento').setValue(new Date(cliente.dataNascimento));
-                        }
                         this.form.markAsPristine();
                         this.form.markAsUntouched();
                     });
@@ -84,12 +79,11 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
     }
 
     salvar(): void {
-        const usuarioOutput: UsuarioOutput = {
+        const cliente: ClienteOutput = {
             nome: this.form.get('nome').value,
-            telefone: this.form.get('telefone').value,
-            dataNascimento: this.form.get('dataNascimento').value
+            telefone: this.form.get('telefone').value
         }
-        this.usuarioService.salvar(usuarioOutput).subscribe(() => {
+        this.clienteService.salvar(cliente).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({
@@ -98,13 +92,16 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
                 detail: 'Cliente cadastrada.',
                 life: 5500
             });
-            this.irParaListaDeUsuarios();
+            this.irParaListagem();
         });
     }
 
     atualizar(): void {
-        const usuario: Usuario = this.form.value;
-        this.usuarioService.atualizar(usuario).subscribe(() => {
+        const clienteOutput: ClienteOutput = {
+            nome: this.form.get('nome').value,
+            telefone: this.form.get('telefone').value,
+        }
+        this.clienteService.atualizar(this.form.get('id').value, clienteOutput).subscribe(() => {
             this.form.markAsPristine();
             this.form.markAsUntouched();
             this.messageService.add({
@@ -113,24 +110,21 @@ export class UsuarioFormComponent implements OnInit, OnDestroy {
                 detail: 'Alterações realizadas com sucesso.',
                 life: 5500
             });
-            this.irParaListaDeUsuarios();
+            this.irParaListagem();
         });
-    }
-
-    voltar(): void {
-        this.router.navigate(['/usuarios'], {relativeTo: this.route});
     }
 
     tituloDoForm(): void {
         if (this.route.snapshot.url[0].path == 'novo') {
-            this.titulo = 'Novo Usuário';
+            this.titulo = 'Novo Cliente';
             this.estaCriando = true;
         } else {
-            this.titulo = 'Editando Usuário';
+            this.titulo = 'Editando Cliente';
         }
     }
 
-    irParaListaDeUsuarios(): void {
-        this.router.navigate(['/usuarios'], {relativeTo: this.route});
+    irParaListagem(): void {
+        this.router.navigate(['/clientes'], {relativeTo: this.route});
     }
+
 }
