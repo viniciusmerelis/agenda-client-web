@@ -9,8 +9,9 @@ import {AppLayoutComponent} from "./layout/app.layout.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
+                    { path: 'agendamentos', loadChildren: () => import('./modules/agendamento/agendamento.module').then(m => m.AgendamentoModule) },
                     { path: 'usuarios', loadChildren: () => import('./modules/usuario/usuario.module').then(m => m.UsuarioModule) },
-                    { path: 'agendamentos', loadChildren: () => import('./modules/agendamento/agendamento.module').then(m => m.AgendamentoModule) }
+                    { path: 'clientes', loadChildren: () => import('./modules/cliente/cliente.module').then(m => m.ClienteModule) }
                 ],
             },
             { path: 'pages/notfound', component: NotfoundComponent },

@@ -8,7 +8,7 @@ import {FullCalendarComponent} from '@fullcalendar/angular';
 import {CalendarOptions} from "@fullcalendar/core";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {UsuarioService} from "../../usuario/service/usuario.service";
-import {Usuario} from "../../usuario/model/usuario.model";
+import {Cliente} from "../../cliente/model/cliente.model";
 
 
 @Component({
@@ -20,8 +20,8 @@ export class AgendamentoFullcalendarComponent implements OnInit, AfterViewInit, 
 
     @ViewChild('calendar') calendar: FullCalendarComponent;
     unsubscribeAll = new Subject<void>();
-    usuarios: Usuario[] = [];
-    designerSelecionada: Usuario;
+    clientes: Cliente[] = [];
+    designerSelecionada: Cliente;
     eventos: Evento[] = [];
     selecionarDesigner: boolean = false;
     exibirAgenda: boolean = false;
@@ -82,7 +82,7 @@ export class AgendamentoFullcalendarComponent implements OnInit, AfterViewInit, 
 
     obterDesigners(): void {
         this.usuarioService.listar().subscribe(usuario => {
-            this.usuarios = usuario;
+            this.clientes = usuario;
             this.selecionarDesigner = true;
         });
     }

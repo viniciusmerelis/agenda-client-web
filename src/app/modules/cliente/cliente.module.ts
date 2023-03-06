@@ -4,6 +4,8 @@ import {CommonModule} from '@angular/common';
 import {ClienteRoutingModule} from './cliente-routing.module';
 import {ClienteListComponent} from './components/cliente-list/cliente-list.component';
 import {ClienteFormComponent} from './components/cliente-form/cliente-form.component';
+import {SharedModule} from "../../shared/shared.module";
+import {NgxMaskModule} from "ngx-mask";
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import {ClienteFormComponent} from './components/cliente-form/cliente-form.compo
     ],
     imports: [
         CommonModule,
-        ClienteRoutingModule
+        ClienteRoutingModule,
+        SharedModule,
+        NgxMaskModule
     ]
 })
 export class ClienteModule {

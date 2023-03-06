@@ -23,8 +23,9 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Agenda',
                 items: [
-                    { label: 'Usuários', icon: 'pi pi-users', routerLink: ['/usuarios'] },
-                    { label: 'Agendamentos', icon: 'pi pi-book', routerLink: ['/agendamentos'] }
+                    { label: 'Agendamentos', icon: 'pi pi-book', routerLink: ['/agendamentos'] },
+                    { label: 'Clientes', icon: 'pi pi-users', routerLink: ['/clientes'] },
+                    { label: 'Usuários', icon: 'pi pi-users', routerLink: ['/usuarios'] }
                 ]
             }
         ];
